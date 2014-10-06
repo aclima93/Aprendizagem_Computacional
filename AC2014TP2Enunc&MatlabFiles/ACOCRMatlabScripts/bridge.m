@@ -1,13 +1,4 @@
-
-<<<<<<< HEAD
-mpaper
-
-T2 = pinv(horzcat(Perfect, Perfect, Perfect, Perfect, Perfect));
-=======
->>>>>>> 3f6982ecb21ccb1d5a5dd4616c103ccc770af8dd
-
-
-%% Memória associativa
+%% Memï¿½ria associativa
 
 Wp = T * pinv(P1);
 P2 = Wp * P1;
