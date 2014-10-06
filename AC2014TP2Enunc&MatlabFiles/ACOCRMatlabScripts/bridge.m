@@ -1,12 +1,38 @@
 
+TOTAL_OF_TEST_CASES = 50;
+NUMBER_OF_SAMPLES_BY_CASE = 5;
+NUMBER_OF_CASES = 10;
+perfs = load('PerfectArial.mat');
+Perfect = perfs.Perfect;
+data_file = load('P.mat');
+P = data_file.P;
+%% MemÃ³ria associativa
+%%Mem_Assoc()
+%{
+Perfect = ones(256,10);
+for i=1:10,
+   Perfect(:,i) = Perfect(:,1)*i ;
+end
+%}
+T = zeros(256,TOTAL_OF_TEST_CASES);
+for j=1:NUMBER_OF_CASES,
+    for i=1:NUMBER_OF_SAMPLES_BY_CASE,
+        T(:,(NUMBER_OF_SAMPLES_BY_CASE*(j-1))+i) = Perfect(:,j); 
+    end   
+end
+P2 = zeros(256,TOTAL_OF_TEST_CASES);
+Wp = T(:,1:TOTAL_OF_TEST_CASES) * pinv(P(:,1:TOTAL_OF_TEST_CASES));
 
-%% Memória associativa
-Mem_Assoc()
+for j=1:TOTAL_OF_TEST_CASES,
+    %Analyse each case
+    P2(:,j) = Wp * P(:,j);
+    %Print the results
+    showim(P2(:,j));
+    pause();
+end
 
-Wp = T * pinv(P1);
-P2 = Wp * P1;
 
-%% Classifcador
+%% Classificador
 Classifier();
 
 temp = Wn * P2 + b; 
@@ -19,8 +45,10 @@ A_linear
 A_sigmoidal
 
 %{
-net=feedforwardnet(1);
+net=feedforwardnet(10,'trainrp');
 %net=newp(P,T) ;
+
+net = configure(cenas)
 
 W=rand(10,256);
 b=rand(10,1);
@@ -33,6 +61,9 @@ net.trainParam.epochs = 1000; % maximum epochs
 net.trainParam.show = 35; % show 
 net.trainParam.goal = 1e-6; % goal=objective 
 net.performFcn = 'sse'; % criterion
+
+%Matlab discards stuff, so
+net.inputs(i).processFcns = {};
 
 net=train(net,P,T);
 W=net.IW{1,1};
