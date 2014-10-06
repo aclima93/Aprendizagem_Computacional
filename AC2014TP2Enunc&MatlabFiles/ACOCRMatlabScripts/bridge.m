@@ -16,7 +16,21 @@ Classifier();
 temp = Wn * P2 + b; 
 A_perceptron = hardlim(temp);
 A_linear = temp;
-A_sigmoidal = logsig(temp);
+A_s
+
+
+
+
+
+
+
+
+
+
+
+
+
+igmoidal = logsig(temp);
 
 A_perceptron
 A_linear
