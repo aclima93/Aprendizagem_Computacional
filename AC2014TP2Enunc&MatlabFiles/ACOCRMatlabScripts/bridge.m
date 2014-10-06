@@ -1,12 +1,13 @@
 
 
-
 %% Memória associativa
+Mem_Assoc();
 
 Wp = T * pinv(P1);
 P2 = Wp * P1;
 
-%% classifcador
+%% Classifcador
+Classifier();
 
 temp = Wn * P2 + b; 
 A_perceptron = hardlim(temp);
