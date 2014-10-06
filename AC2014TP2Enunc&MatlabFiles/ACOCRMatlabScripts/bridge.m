@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 
 
 %% Memória associativa
-Mem_Assoc();
-=======
-%% Memï¿½ria associativa
->>>>>>> d29171f308beb2c84ec4f7f188c405a07706635f
+Mem_Assoc()
 
 Wp = T * pinv(P1);
 P2 = Wp * P1;
@@ -16,21 +12,7 @@ Classifier();
 temp = Wn * P2 + b; 
 A_perceptron = hardlim(temp);
 A_linear = temp;
-A_s
-
-
-
-
-
-
-
-
-
-
-
-
-
-igmoidal = logsig(temp);
+A_sigmoidal = logsig(temp);
 
 A_perceptron
 A_linear
