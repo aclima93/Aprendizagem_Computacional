@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 
 
 %% Memória associativa
 Mem_Assoc();
+=======
+%% Memï¿½ria associativa
+>>>>>>> d29171f308beb2c84ec4f7f188c405a07706635f
 
 Wp = T * pinv(P1);
 P2 = Wp * P1;
