@@ -1,4 +1,6 @@
 
+mpaper
+
 T2 = pinv(horzcat(Perfect, Perfect, Perfect, Perfect, Perfect));
 
 Wp = T2*pinv(P);
