@@ -69,8 +69,7 @@ b = net.b{1, 1};
 pause();
 
 % validation
-a = sim(net, P2);
-showim(a);
+a = sim(net, Pt);
 
 
 %temp = Wn * P2 + b; 
