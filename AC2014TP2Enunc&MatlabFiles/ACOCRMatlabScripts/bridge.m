@@ -8,7 +8,8 @@
 Perfect = load('PerfectArial.mat');
 P = load('digitos.mat');
 Perfect = Perfect.Perfect;
-P = P.digitos;
+%send the zero to the end of the 'array'
+P = horzcat(P.digitos(:,51:500),P.digitos(:,1:50));
 
 [N, NUMBER_OF_CASES] = size(Perfect);
 [n, TOTAL_TEST_CASES] = size(P);
