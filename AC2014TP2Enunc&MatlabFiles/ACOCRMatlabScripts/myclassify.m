@@ -30,8 +30,6 @@ function a = myclassify(drawn_numbers, empty_indexes)
     % calculate the weights
     Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
 
-    %create the test dataset
-    %mpaper
     data_file2 = load('P.mat'); %we're lazy, so we just load it time and time again
     Pt = data_file2.P;
     [ni, nj] = size(Pt);
@@ -54,15 +52,12 @@ function a = myclassify(drawn_numbers, empty_indexes)
     if (temp == 1)
         transfer_function = 'logsig';
         learning_function = 'learngd';
-        break;
     elseif (temp == 2)
         transfer_function = 'purelin';
         learning_function = 'learngd';
-        break;
     elseif (temp == 3)
         transfer_function = 'hardlim';
         learning_function = 'learnp';
-        break;
     end
     
     % initialize
