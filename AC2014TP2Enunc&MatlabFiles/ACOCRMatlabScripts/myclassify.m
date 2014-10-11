@@ -1,4 +1,4 @@
-function myclassify(drawn_numbers, non_empty_indexes)
+function a = myclassify(drawn_numbers, empty_indexes)
 
     %% Variables
     % T : desired output
@@ -49,8 +49,24 @@ function myclassify(drawn_numbers, non_empty_indexes)
 
     %% Classifier
 
+	%prompt for activation function
+    temp = input('\nSelect the desired activation function.\n1 - sigmoidal\n2 - linear\n3 - hard-limit\n');
+    if (temp == 1)
+        transfer_function = 'logsig';
+        learning_function = 'learngd';
+        break;
+    elseif (temp == 2)
+        transfer_function = 'purelin';
+        learning_function = 'learngd';
+        break;
+    elseif (temp == 3)
+        transfer_function = 'hardlim';
+        learning_function = 'learnp';
+        break;
+    end
+    
     % initialize
-    net = newp(P, T);
+    net = newp(P, T, transfer_function, learning_function);
     W = rand(N, N);
     b = rand(N, 1);
     net.IW{1, 1} = W;
@@ -74,10 +90,4 @@ function myclassify(drawn_numbers, non_empty_indexes)
     a = sim(net, P2);
     showim(a);
 
-
-    %temp = Wn * P2 + b; 
-    %A_perceptron = hardlim(temp);
-    %A_linear = temp;
-    %A_sigmoidal = logsig(temp);
-
-return a
+end
