@@ -1,5 +1,8 @@
 function a = myclassify(drawn_numbers, empty_indexes)
 
+    %filter empty squares
+    drawn_numbers = drawn_numbers(:, empty_indexes);
+
     %% Variables
     % T : desired output
     % P : training inputs
@@ -30,8 +33,12 @@ function a = myclassify(drawn_numbers, empty_indexes)
     % calculate the weights
     Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
 
-    data_file2 = load('P.mat'); %we're lazy, so we just load it time and time again
+    %{
+    data_file2 = load('P.mat');
     Pt = data_file2.P;
+    %}
+    Pt = drawn_numbers
+
     [ni, nj] = size(Pt);
     P2 = zeros(N, nj);
     for j=1:nj,
