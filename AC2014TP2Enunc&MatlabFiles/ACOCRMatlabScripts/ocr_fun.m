@@ -44,7 +44,8 @@ y(filled_inx)=Y;
 
 
 %::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: displays results
-figure(10); clf;
+figure(2);
+clf;
 
 %--------------------------- plot grid 5 x 10 
 axis equal;

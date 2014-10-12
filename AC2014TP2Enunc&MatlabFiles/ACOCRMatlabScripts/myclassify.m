@@ -86,7 +86,7 @@ function a = myclassify(drawn_numbers, used_indexes)
         end   
     end
     % initialize
-    net = newp(P, T) %, transfer_function, learning_function);
+    net = newp(P, T); %, transfer_function, learning_function);
     W = rand(10, N);
     b = rand(10, 1);
     net.IW{1, 1} = W;
@@ -105,10 +105,20 @@ function a = myclassify(drawn_numbers, used_indexes)
     net = train(net, P, T);
     W = net.IW{1, 1};
     b = net.b{1, 1};
-    pause();
+    
 
     % validation
-    a = sim(net, Pt)
+    results = sim(net, Pt);
+    a = zeros(1,TOTAL_TEST_CASES);
+    for i=1:TOTAL_TEST_CASES,
+        temp = find(results(:,i)==1);
+        [t,~] = size(temp);
+        if t>0
+            a(i) = temp(1); 
+        else
+            a(i) = -1;
+        end
+    end
     %showim(a);
 
 end

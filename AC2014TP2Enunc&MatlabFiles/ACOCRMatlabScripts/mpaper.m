@@ -107,7 +107,7 @@ else
   % brush stroke within del_dist is deleted
   if ~isfield( options, 'del_dist'), options.del_dist = 0.01; end  
   
-  figure;
+  figure(1);
   set( gcf, 'WindowButtonDownFcn', 'mpaper(''Dn'')' );
   Cla;
   setappdata( gcf, 'options',options );
