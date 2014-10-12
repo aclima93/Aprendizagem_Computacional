@@ -1,13 +1,11 @@
 function a = myclassify(drawn_numbers, empty_indexes)
 
-    %filter empty squares
-    drawn_numbers = drawn_numbers(:, empty_indexes);
-
     %% Variables
     % T : desired output
     % P : training inputs
     % Pt : inputed test
-
+    
+    %% Load training inputs
 
     %Load the training dataset and desired output
     Perfect = load('PerfectArial.mat');
@@ -30,14 +28,21 @@ function a = myclassify(drawn_numbers, empty_indexes)
         end   
     end
 
-    % calculate the weights
-    Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
+    %prompt for transpose end calculate the weights
+    temp = input('\nSelect the desired weighing method:\n\t1 - transpose\n\t2 - pinv\n');
+    if (temp == 1)
+        Wp = T(:,1:TOTAL_TEST_CASES) * P(:,1:TOTAL_TEST_CASES)' ;
+    else
+        Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
+    end
 
     %{
     data_file2 = load('P.mat');
     Pt = data_file2.P;
     %}
-    Pt = drawn_numbers
+    %filter empty squares
+    drawn_numbers = drawn_numbers(:, empty_indexes);
+    Pt = drawn_numbers;
 
     [ni, nj] = size(Pt);
     P2 = zeros(N, nj);
@@ -55,7 +60,7 @@ function a = myclassify(drawn_numbers, empty_indexes)
     %% Classifier
 
 	%prompt for activation function
-    temp = input('\nSelect the desired activation function.\n1 - sigmoidal\n2 - linear\n3 - hard-limit\n');
+    temp = input('\nSelect the desired activation function:\n\t1 - sigmoidal\n\t2 - linear\n\t3 - hard-limit\n');
     if (temp == 1)
         transfer_function = 'logsig';
         learning_function = 'learngd';
