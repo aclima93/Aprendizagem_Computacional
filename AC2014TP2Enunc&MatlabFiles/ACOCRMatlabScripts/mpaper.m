@@ -186,7 +186,7 @@ function Dn(varargin)
  % superior do desktop) a matriz P.mat e o vector ind.mat.
  % segue-se a classifica��o que se faz activando a linha seguinte 
  
-           %  feval(options.fun,data);
+           feval(options.fun,data);
              
  % feval vai calcular a fun��o options.fun, que por defeito � a ocr_fun;
  % ocr_fun chama a fun��o myclassify que deve ser escrita pelo utilizador. 

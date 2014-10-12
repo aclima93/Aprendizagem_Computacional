@@ -1,2 +1,2 @@
 mpaper();
-clear;
+%clear;
