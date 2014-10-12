@@ -11,8 +11,7 @@ function a = myclassify(drawn_numbers, empty_indexes)
     Perfect = load('PerfectArial.mat');
     P = load('digitos.mat');
     Perfect = Perfect.Perfect;
-    %send the zero to the end of the 'array'
-    %P = horzcat(P.digitos(:,51:500),P.digitos(:,1:50));
+    P = P.digitos;
 
     [N, NUMBER_OF_CASES] = size(Perfect);
     [n, TOTAL_TEST_CASES] = size(P);
@@ -29,7 +28,7 @@ function a = myclassify(drawn_numbers, empty_indexes)
     Pt = drawn_numbers;
     
     %prompt for inclusion of Associative Memory
-    temp = input('\nApply Associative Memory to testing set?:\n\t1 - Yes\n\t2 - No\n');
+    temp = input('\nApply Associative Memory to test set?:\n\t1 - Yes\n\t2 - No\n');
 
     %purify testing data with Associative Memory
     if (temp == 1)
@@ -60,6 +59,7 @@ function a = myclassify(drawn_numbers, empty_indexes)
             clf('reset')
             %}
         end
+        Pt = P2;
     end
 
     %% Classifier
@@ -99,7 +99,7 @@ function a = myclassify(drawn_numbers, empty_indexes)
     pause();
 
     % validation
-    a = sim(net, P2);
+    a = sim(net, Pt);
     showim(a);
 
 end
