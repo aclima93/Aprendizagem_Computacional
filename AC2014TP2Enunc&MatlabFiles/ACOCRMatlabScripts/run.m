@@ -1,0 +1,2 @@
+mpaper();
+clear;

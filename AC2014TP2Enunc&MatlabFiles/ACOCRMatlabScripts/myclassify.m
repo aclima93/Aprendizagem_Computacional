@@ -12,29 +12,13 @@ function a = myclassify(drawn_numbers, empty_indexes)
     P = load('digitos.mat');
     Perfect = Perfect.Perfect;
     %send the zero to the end of the 'array'
-    P = horzcat(P.digitos(:,51:500),P.digitos(:,1:50));
+    %P = horzcat(P.digitos(:,51:500),P.digitos(:,1:50));
 
     [N, NUMBER_OF_CASES] = size(Perfect);
     [n, TOTAL_TEST_CASES] = size(P);
     NUMBER_OF_SAMPLES_BY_CASE = TOTAL_TEST_CASES / NUMBER_OF_CASES;
 
     %% Associative Memory
-
-    % adapt the Perfect matrix to the dataset
-    T = zeros(N,TOTAL_TEST_CASES);
-    for j=1:NUMBER_OF_CASES,
-        for i=1:NUMBER_OF_SAMPLES_BY_CASE,
-            T(:,(NUMBER_OF_SAMPLES_BY_CASE*(j-1))+i) = Perfect(:,j); 
-        end   
-    end
-
-    %prompt for transpose end calculate the weights
-    temp = input('\nSelect the desired weighing method:\n\t1 - transpose\n\t2 - pinv\n');
-    if (temp == 1)
-        Wp = T(:,1:TOTAL_TEST_CASES) * P(:,1:TOTAL_TEST_CASES)' ;
-    else
-        Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
-    end
 
     %{
     data_file2 = load('P.mat');
@@ -43,19 +27,40 @@ function a = myclassify(drawn_numbers, empty_indexes)
     %filter empty squares
     drawn_numbers = drawn_numbers(:, empty_indexes);
     Pt = drawn_numbers;
+    
+    %prompt for inclusion of Associative Memory
+    temp = input('\nApply Associative Memory to testing set?:\n\t1 - Yes\n\t2 - No\n');
 
-    [ni, nj] = size(Pt);
-    P2 = zeros(N, nj);
-    for j=1:nj,
-        P2(:,j) = Wp * Pt(:,j); %Analyse each case
-        %Print the results
-        %{
-        showim(P2(:,j));
-        pause();
-        clf('reset')
-        %}
+    %purify testing data with Associative Memory
+    if (temp == 1)
+        % adapt the Perfect matrix to the dataset
+        T = zeros(N,TOTAL_TEST_CASES);
+        for j=1:NUMBER_OF_CASES,
+            for i=1:NUMBER_OF_SAMPLES_BY_CASE,
+                T(:,(NUMBER_OF_SAMPLES_BY_CASE*(j-1))+i) = Perfect(:,j); 
+            end   
+        end
+
+        %prompt for transpose end calculate the weights
+        temp = input('\nSelect the desired weighing method:\n\t1 - transpose\n\t2 - pinv\n');
+        if (temp == 1)
+            Wp = T(:,1:TOTAL_TEST_CASES) * P(:,1:TOTAL_TEST_CASES)' ;
+        else
+            Wp = T(:,1:TOTAL_TEST_CASES) * pinv(P(:,1:TOTAL_TEST_CASES));
+        end
+
+        [ni, nj] = size(Pt);
+        P2 = zeros(N, nj);
+        for j=1:nj,
+            P2(:,j) = Wp * Pt(:,j); %Analyse each case
+            %Print the results
+            %{
+            showim(P2(:,j));
+            pause();
+            clf('reset')
+            %}
+        end
     end
-
 
     %% Classifier
 
