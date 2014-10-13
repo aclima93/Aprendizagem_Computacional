@@ -10,7 +10,7 @@ function a = myclassify(drawn_numbers, used_indexes)
     %Load the training dataset and desired output
     Perfect = load('PerfectArial.mat');
     Perfect = Perfect.Perfect;
-    P = load('digitos2.mat');
+    P = load('digitos.mat');
     P = P.P;
     
 
@@ -112,16 +112,24 @@ function a = myclassify(drawn_numbers, used_indexes)
     % validation
     results = sim(net, Pt);
     % expected results
-    ExpectedResults = repmat(eye(10),1,5);
-    results = abs(results-1);
-    
+    if TOTAL_TEST_CASES==50,
+        ExpectedResults = abs(repmat(eye(10),1,5)-1);
+    else
+        ExpectedResults = abs(eye(10)-1);
+    end
+    results = abs(results-1)
+    [~,ExpectedResultsIndex] = min(ExpectedResults);
+    [~,resultsIndex] = min(results);
     
     a = zeros(1,TOTAL_TEST_CASES);
+    
+    disp('Casos certos:');
+    countRightOnes = nnz(ExpectedResultsIndex == resultsIndex)
+    
+    
     for i=1:TOTAL_TEST_CASES,
-        temp = find(results(:,i)==min(abs(results(:,i)-1)));
-        [t,~] = size(temp);s
-        if t>0
-            a(i) = temp(1); 
+        if ExpectedResultsIndex(i) == resultsIndex(i)
+            a(i) = resultsIndex(i); 
         else
             a(i) = -1;
         end
