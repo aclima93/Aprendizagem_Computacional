@@ -10,7 +10,7 @@ function a = myclassify(drawn_numbers, used_indexes)
     %Load the training dataset and desired output
     Perfect = load('PerfectArial.mat');
     Perfect = Perfect.Perfect;
-    P = load('digitos.mat');
+    P = load('digitos2.mat');
     P = P.P;
     
 
@@ -111,6 +111,11 @@ function a = myclassify(drawn_numbers, used_indexes)
 
     % validation
     results = sim(net, Pt);
+    % expected results
+    ExpectedResults = repmat(eye(10),1,5);
+    results = abs(results-1);
+    
+    
     a = zeros(1,TOTAL_TEST_CASES);
     for i=1:TOTAL_TEST_CASES,
         temp = find(results(:,i)==min(abs(results(:,i)-1)));
