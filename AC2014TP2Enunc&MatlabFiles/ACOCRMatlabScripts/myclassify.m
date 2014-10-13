@@ -86,7 +86,7 @@ function a = myclassify(drawn_numbers, used_indexes)
         end   
     end
     % initialize
-    net = newp(P, T); %, transfer_function, learning_function);
+    net = newp(P, T, transfer_function, learning_function);
     W = rand(10, N);
     b = rand(10, 1);
     net.IW{1, 1} = W;
