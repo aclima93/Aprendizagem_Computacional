@@ -113,8 +113,8 @@ function a = myclassify(drawn_numbers, used_indexes)
     results = sim(net, Pt);
     a = zeros(1,TOTAL_TEST_CASES);
     for i=1:TOTAL_TEST_CASES,
-        temp = find(results(:,i)==max(results(:,i)));
-        [t,~] = size(temp);
+        temp = find(results(:,i)==min(abs(results(:,i)-1)));
+        [t,~] = size(temp);s
         if t>0
             a(i) = temp(1); 
         else
