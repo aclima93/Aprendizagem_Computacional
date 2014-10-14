@@ -117,7 +117,7 @@ function a = myclassify(drawn_numbers, used_indexes, user_choices, training_set)
     else
         ExpectedResults = abs(eye(10)-1);
     end
-    results = abs(results-1)
+    results = abs(results-1);
     [~,ExpectedResultsIndex] = min(ExpectedResults);
     [~,resultsIndex] = min(results);
     
