@@ -1,5 +1,0 @@
-function [sens, spec] = sensitivity_specifity(TP, FP, TN, FN)
-
-
-
-end
