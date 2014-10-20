@@ -18,7 +18,7 @@ temp = test;
 data.X = temp;
 %ocr_fun(data);
 
-% i'm lazy, so i automated. can't blame me, blame my lazyness
+% automated param choice
 training_set = 'digitos.mat';
 for i=1:2,
     for j=1:2,
@@ -30,3 +30,6 @@ for i=1:2,
         end
     end
 end
+% manual param choice
+%ocr_fun(data, training_set);
+
