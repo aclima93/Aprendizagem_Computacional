@@ -1,4 +1,6 @@
-function [train,train_target,test,test_target] = prep_dataset(train_dataset,target_dataset)
+function [train,train_target,test,test_target] = prep_dataset(dataset,target_dataset,trainPrecentage)
+   
+    [NUM_LINES,NUM_COLUMNS] = size(dataset);
 
 %% How can we do this, in a easy way?
 %% http://weknowmemes.com/generator/uploads/generated/g1369409960206058073.jpg
@@ -35,18 +37,45 @@ function [train,train_target,test,test_target] = prep_dataset(train_dataset,targ
 
 %% So, lets do this
     %FIXME: Now only has the crysis, and all of them
-    %create the output matrix
+    %Get the Size of the matrix
     [~,length] = size(indices);
-    train = zeros(length,29);
-    train_target = zeros(length,1);
+    disp('Number of True in the target:');
+    disp(length);
+    trainSize = ceil(length*trainPrecentage);
+    if trainSize == length,
+        trainSize = floor(length*trainPrecentage);
+    end
+    final_trainSize = trainSize*2;
+    testSize = length - trainSize;
+    final_testSize = testSize*2;
     
-    %fill the output matrix
-    train = train_dataset(indices,:);
-    train_target = target_dataset(indices,:);
+    %create the indices for the Not crysis
+    notCrysisIndices = (find(target_dataset == 0));
+    [a,~] = size(notCrysisIndices);
+    notCrysisIndices = notCrysisIndices(randperm(a));
+    %notCrysisIndices = notCrysisIndices(randperm(length(notCrysisIndices)));
     
-    %% LOL, the test = train :p
-    test = train;
-    test_target  = train_target;
+    %create the output matrix
+    %FIXME: falta acrescentar ao size os Not crysis
+    train = zeros(final_trainSize,NUM_COLUMNS);
+    train_target = zeros(final_trainSize,1);
+    test = zeros(final_testSize,NUM_COLUMNS);
+    test_target = zeros(final_testSize,1);
     
-
-
+    %% fill the output matrix
+    
+    %suffle the indices
+    indices = indices(randperm(length));
+    
+    %add the data to the train dataset
+    train(1:trainSize,:) = dataset(indices(1:trainSize),:);
+    train_target(1:trainSize,:) = target_dataset(indices(1:trainSize),:);
+    train((trainSize+1):final_trainSize,:) = dataset(notCrysisIndices(1:trainSize),:);
+    train_target((trainSize+1):final_trainSize,:) = target_dataset(notCrysisIndices(1:trainSize),:);
+    
+    %add the data to the test dataset
+    test(1:testSize,:) = dataset(indices((trainSize+1):length),:);
+    test_target(1:testSize,:) = target_dataset(indices((trainSize+1):length),:);
+    test((testSize+1):final_testSize,:) = dataset(notCrysisIndices((trainSize+1):length),:);
+    test_target((testSize+1):final_testSize,:) = target_dataset(notCrysisIndices((trainSize+1):length),:);
+    
