@@ -1,6 +1,6 @@
-function mlnn( num_neurons, target, train_function, train_set, test_set, filename)
+function mlnn( num_hidden_layers, target, train_function, train_set, test_set, filename)
 
-net = feedforwardnet(num_neurons, train_function);
+net = feedforwardnet(num_hidden_layers, train_function);
 net = train(net, train_set, target);
 
 %plot and print classification
