@@ -75,9 +75,7 @@ function [train,train_target,test,test_target] = prep_dataset(dataset,target_dat
     [a,~] = size(train);
     aux = randperm(a);
     train = train(aux,:);
-    train_target = train_target(aux);
-    train_target = repmat(train_target,1,2);
-    train_target(:,2) = (train_target(:,2) == 0)';
+    train_target = train_target(aux);           
     
     %add the data to the test dataset
     test(1:testSize,:) = dataset(indices((trainSize+1):length),:);
@@ -86,5 +84,5 @@ function [train,train_target,test,test_target] = prep_dataset(dataset,target_dat
     test_target((testSize+1):final_testSize,:) = target_dataset(notCrysisIndices((trainSize+1):length),:);
     
     test_target = repmat(test_target,1,2);
-    test_target(:,2) = (test_target(:,2) == 0)';
+    tsig = (target_dataset == 0)';
     

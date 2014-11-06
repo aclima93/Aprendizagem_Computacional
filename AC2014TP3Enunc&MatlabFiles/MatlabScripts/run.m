@@ -20,16 +20,25 @@ trainPrecentage = 0.7;
 train_set = train_set';
 target = target';
 test_set = test_set';
+test_target = test_target';
 
-num_hidden_layers = 5;
-train_func = 'trainlm';
+num_hidden_layers = [20,15,10,5];
+train_func = 'trainlm'; %Lev...
+%train_func = 'traingd'; %Gradient...
+%train_func = 'traincgb'; %conjugate blablabla
+%train_func = 'trainbfg'; %quasinewton
+%train_func = 'trainscg';
+%train_func = 'traingdm';
+
+%princomp(train_set)
+
 train_size = size(train_set);
 test_size = size(test_set);
 train_size = train_size(1)*train_size(2);
 test_size = test_size(1)*test_size(2);
 
 %Se quiseres verificar se funciona/fazer isto, avisa
-:)
-%filename = strcat(imgdir, data_id, '_', num2str(num_hidden_layers), '_', train_func, '_', num2str(train_size), '_', num2str(test_size));
-%mlnn(num_hidden_layers, target, train_func, train_set, test_set, filename);
+
+filename = strcat(imgdir, data_id, '_', num2str(num_hidden_layers), '_', train_func, '_', num2str(train_size), '_', num2str(test_size));
+mlnn(num_hidden_layers, target, train_func, train_set, test_set,test_target, filename);
 

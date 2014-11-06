@@ -6,19 +6,12 @@ net = train(net, train_set, target);
 
 %plot and print classification
 network_outputs = net(test_set);
-figure(1);
-plot(network_outputs(1,:)','g');
+plot(network_outputs')
 hold on;
-plot(test_target(1,:)','b');
+plot(test_target','red');
 hold off;
-figure(2);
-plot(network_outputs(2,:)','r');
-hold on;
-plot(test_target(2,:)','k');
-hold off;
-
 print(1, '-dpng', strcat(filename, '__1'));
-print(2, '-dpng', strcat(filename, '__2'));
+
 %close Figure 1;
 
 %create it in a MATLAB figure
@@ -34,7 +27,7 @@ jframe.dispose();
 
 %print to file
 set(hFig, 'PaperPositionMode', 'auto');
-saveas(hFig, strcat(filename, '__netconfig'), 'png');
+saveas(hFig, strcat(filename, '__2'), 'png');
 close(hFig);
 
 %performance = perform(net, targets, network_outputs)
