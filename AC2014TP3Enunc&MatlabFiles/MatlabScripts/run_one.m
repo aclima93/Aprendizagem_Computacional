@@ -31,7 +31,7 @@ function [filename, result] = run_one( data_id, train_percentage, train_func, hi
         train_size = train_size(1)*train_size(2);
         test_size = test_size(1)*test_size(2);
 
-        filename = strcat(imgdir, data_id, '_', num2str(num_hidden_layers), '_', train_func, '_', num2str(train_size), '_', num2str(test_size));
+        filename = strcat(imgdir, data_id, '_', num2str(length(hidden_layers)), '_', num2str(hidden_layers(1)), '_', train_func, '_', num2str(train_size), '_', num2str(test_size));
         result = mlnn(hidden_layers, target, train_func, train_set, test_set,test_target, filename);
 
 end

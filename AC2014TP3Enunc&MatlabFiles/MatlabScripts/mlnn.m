@@ -2,10 +2,16 @@ function performance = mlnn( hidden_layers, target, train_function, train_set, t
 %% multi-layer neural network
 
 
-    net = feedforwardnet(hidden_layers, train_function);
-    net = train(net, train_set, target, 'useGPU', 'yes');
-    network_outputs = net(test_set, 'useGPU', 'yes');
-    
+    if version('-release') == '2014a'
+        net = feedforwardnet(hidden_layers, train_function);
+        net = train(net, train_set, target, 'useGPU', 'yes');
+        network_outputs = net(test_set, 'useGPU', 'yes');
+    else
+        net = feedforwardnet(hidden_layers, train_function);
+        net = train(net, train_set, target);
+        network_outputs = net(test_set);
+    end
+        
     %plot and print classification
     figure(1);
     plot(network_outputs(1,:)','g');
@@ -19,7 +25,7 @@ function performance = mlnn( hidden_layers, target, train_function, train_set, t
     hold off;
     print(1, '-dpng', strcat(filename, '__1'));
     print(2, '-dpng', strcat(filename, '__2'));
-    %close Figure 1;
+    close Figure 1;
 
     %create it in a MATLAB figure
     jframe = view(net);
@@ -37,7 +43,7 @@ function performance = mlnn( hidden_layers, target, train_function, train_set, t
     saveas(hFig, strcat(filename, '__netconfig'), 'png');
     close(hFig);
 
-    performance = perform(net, targets, network_outputs);
+    performance = perform(net, target, network_outputs);
 
     close all;
 
