@@ -1,26 +1,28 @@
 
+net_types = {'feedforwardnet'};
+data_ids = {'92202'}; %{'92202', '112502', '63502'};
+train_funcs = {'trainlm'}; %{'trainlm', 'traingd', 'traincgb', 'trainbfg', 'trainscg', 'traingdm'};
+train_percentages = 0.7; %[0.7, 0.725, 0.675, 0.75, 0.65, 0.8, 0.6, 0.85, 0.55];
+hidden_layers = [20, 20]; %[20, 20, 20, 20, 20];
+characteristics = [29, 0]; % all or only primary components
+classifications = 1:3; % 1-1, 10, 5/10
+
+save('dataset/net_types.mat','net_types');
+save('dataset/data_ids.mat','data_ids');
+save('dataset/train_funcs.mat','train_funcs');
+save('dataset/train_percentages.mat','train_percentages');
+save('dataset/hidden_layers.mat','hidden_layers');
+save('dataset/characteristics.mat', 'characteristics');
+save('dataset/classifications.mat', 'classifications');
+
 choice = questdlg('Run all simulations?', 'Run all simulations?','Yes','No', 'No');
 switch choice
     case 'No'
-
         GUI;
-        
-        %{
-        gui_handle = hgload('GUI.fig');
-        
-        data_id = guidata(gui_handle.data_set_popupmenu);
-        train_percentage = guidata(gui_handle.training_percentage_edit);
-        train_func = guidata(gui_handle.learning_function_popupmenu);
-        num_hidden_layers = guidata(gui_handle.hidden_layers_edit);
-        hidden_layers_size = guidata(gui_handle.hidden_layers_size_edit);
-        hidden_layers = ones(1, num_hidden_layers) * hidden_layers_size;
-     
-        run_one(data_id, train_percentage, train_func, hidden_layers);
-        %}
-        
-        
+             
     otherwise
         run_all;
+        
 
 end
 

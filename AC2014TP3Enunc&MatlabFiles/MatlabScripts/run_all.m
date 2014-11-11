@@ -1,27 +1,41 @@
 %% Batch run simulations for everything
 
-data_ids = {'92202', '112502', '63502'};
-train_funcs = {'trainlm'}; %{'trainlm', 'traingd', 'traincgb', 'trainbfg', 'trainscg', 'traingdm'};
-train_percentages = 0.7; %[0.7, 0.725, 0.675, 0.75, 0.65, 0.8, 0.6, 0.85, 0.55];
-hidden_layers = [20]; %[20, 20, 20, 20];
+load('dataset/net_types.mat','net_types');
+load('dataset/data_ids.mat', 'data_ids');
+load('dataset/train_funcs.mat', 'train_funcs');
+load('dataset/train_percentages.mat', 'train_percentages');
+load('dataset/hidden_layers.mat', 'hidden_layers');
+load('dataset/characteristics.mat', 'characteristics');
+load('dataset/classifications.mat', 'classifications');
 
+
+len_types = length(net_types);
 len_ids = length(data_ids);
 len_funcs = length(train_funcs);
 len_percs = length(train_percentages);
-num_cases = len_ids*len_funcs*len_percs*length(hidden_layers);
-result = cell(num_cases);
+len_charact = length(characteristics);
+len_class = length(classifications);
+num_cases = len_ids*len_funcs*len_percs*length(hidden_layers)*len_charact*len_class;
+result = cell(num_cases, 3);
 counter = 1;
 
 h = waitbar(0,'Initializing waitbar...');
 
-for i = len_ids
-    for j = len_percs
-        for k = len_funcs
+for n = len_types
+    for i = len_ids
+        for j = len_percs
+            for k = len_funcs
+                for l = len_class
+                    for m = len_charact
 
-            perc = (counter*100)/num_cases; 
-            waitbar(perc/100, h, sprintf('%d%% along...', perc))
-            [result(counter,1), result(counter,2)] = run_one(data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers);
-            counter = counter + 1;
+                        perc = (counter*100)/num_cases; 
+                        waitbar(perc/100, h, sprintf('%d%% along...', perc))
+                        [result(counter,1), result(counter,2), result(counter,3)] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers, classifications(l), characteristics(m));
+                        counter = counter + 1;
+                        close all;
+                    end
+                end
+            end
         end
     end
 end
