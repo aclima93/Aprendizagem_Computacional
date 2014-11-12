@@ -6,38 +6,36 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     % - ACL
 
     % filter the primary components based on the number of desired characteristics chosen by the user
-    if (num_characteristics < 1) | (num_characteristics > 29)
+    if (num_characteristics < 1) || (num_characteristics > 29)
         
-        figure(1);
+        %figure(1);
         [primary_components, reduced_data] = princomp(train_set);
-        biplot(primary_components(:,1:2), 'Scores', reduced_data(:,1:2), 'VarLabels', {'X1' 'X2' 'X3' 'X4'});
-        print(1, '-dpng', strcat(filename, '__correlations'));
+        %biplot(primary_components(:,1:2), 'Scores', reduced_data(:,1:2), 'VarLabels', {'X1' 'X2' 'X3' 'X4'});
+        %print(1, '-dpng', strcat(filename, '__correlations'));
         
     else
         
         % Compute sample correlation and p-values.
         % Find significant correlations, don't count the target
         % 1 and -1 are the most important, 0 is worthless
-        [r,p] = corrcoef(vertcat(train_set, target(1,:)));  
-        indexes = find(p(1:(length(p)-1), length(p))<0.05);  
-        indexed_corr = horzcat(abs(r(length(p),indexes)'), indexes);
+        [r,p] = corrcoef(horzcat(train_set', target(1,:)'));
+        [x,~] = size(p);
+        indexed_corr = vertcat(abs(r(length(p),1:(x-1))), 1:(x-1));
         reduced_correlations = cell(length(indexed_corr), 1);
+        
         for i = 1:length(indexed_corr)
-            reduced_correlations{i} = indexed_corr(i,1);
+            reduced_correlations{i} = indexed_corr(1,i);
         end
         
         % sort by correlation but maintain index information and filter the best X elements
         temp = [reduced_correlations{:}];
         [~, ind] = sort( temp(1,:), 'descend');
         best_rc_ind = ind(1:num_characteristics);
-        %filtered_rc = {reduced_correlations(best_rc_ind)};
-        %save('train_set.mat','train_set');
-        reduced_data = train_set(best_rc_ind, :); 
-        %save('train_set.mat','train_set');
-        %save('reduced_data.mat','reduced_data');
+        reduced_data = train_set(best_rc_ind, :);
         
     end
     
+    %save('reduced_data.mat','reduced_data');
     train_set = reduced_data; % the reduced data is our new training data
 
     %% end of disclaimer
@@ -49,9 +47,11 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
         net = feedforwardnet(hidden_layers, train_function);
     end
 
+    save('test_set.mat','test_set');
+    
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
-        net = train(net, train_set, target, 'useGPU', 'yes', 'showResources', 'yes');
-        network_outputs = net(test_set, 'useGPU', 'yes', 'showResources', 'yes');
+        net = train(net, train_set, target, 'useGPU', 'yes');
+        network_outputs = net(test_set, 'useGPU', 'yes');
     else
         net = train(net, train_set, target);
         network_outputs = net(test_set);

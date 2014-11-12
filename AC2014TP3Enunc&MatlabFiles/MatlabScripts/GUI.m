@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 11-Nov-2014 13:54:35
+% Last Modified by GUIDE v2.5 12-Nov-2014 23:14:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -68,7 +68,12 @@ guidata(hObject, handles);
 % This sets up the initial plot - only do when we are invisible
 % so window can get raised using GUI.
 if strcmp(get(hObject,'Visible'),'off')
-    plot(rand(5));
+    %plot(rand(5));
+    temp = get(handles.data_set_popupmenu, 'String');
+    data_id = temp(get(handles.data_set_popupmenu, 'Value'));
+    
+    %plot data set?
+    
 end
 
 % UIWAIT makes GUI wait for user response (see UIRESUME)
@@ -131,18 +136,26 @@ function run_simulation_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-    %gui_handle = hgload('GUI.fig');
+    temp = get(handles.net_type_popupmenu, 'String');
+    net_type = temp(get(handles.net_type_popupmenu, 'Value'));
 
-    data_id = handles.data_set_popupmenu;
-    train_percentage = handles.training_percentage_edit;
-    train_func = handles.learning_function_popupmenu;
-    num_hidden_layers = handles.hidden_layers_edit;
-    hidden_layers_size = handles.hidden_layers_size_edit;
-    hidden_layers = ones(1, num_hidden_layers) * hidden_layers_size;
-
-    % get(handles.popupmenu1, 'Value')
+    temp = get(handles.data_set_popupmenu, 'String');
+    data_id = temp(get(handles.data_set_popupmenu, 'Value'));
     
-    run_one(data_id, train_percentage, train_func, hidden_layers);
+    train_percentage = get(handles.training_percentage_edit, 'String');
+    
+    temp = get(handles.learning_function_popupmenu, 'String');
+    train_func = temp(get(handles.learning_function_popupmenu, 'Value'));
+    
+    num_hidden_layers = get(handles.hidden_layers_edit, 'String');
+    hidden_layers_size = get(handles.hidden_layers_size_edit, 'String');
+    hidden_layers = ones(1, num_hidden_layers) * hidden_layers_size;
+    
+    classification_method = 
+    
+    num_characteristics = 
+    
+    run_one(net_type, data_id, train_percentage, train_func, hidden_layers, classification_method, num_characteristics);
 
 
 
@@ -329,19 +342,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in type_popupmenu.
-function type_popupmenu_Callback(hObject, eventdata, handles)
-% hObject    handle to type_popupmenu (see GCBO)
+% --- Executes on selection change in net_type_popupmenu.
+function net_type_popupmenu_Callback(hObject, eventdata, handles)
+% hObject    handle to net_type_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns type_popupmenu contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from type_popupmenu
+% Hints: contents = cellstr(get(hObject,'String')) returns net_type_popupmenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from net_type_popupmenu
 
 
 % --- Executes during object creation, after setting all properties.
-function type_popupmenu_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to type_popupmenu (see GCBO)
+function net_type_popupmenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to net_type_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
