@@ -19,7 +19,7 @@ num_cases = len_ids*len_funcs*len_percs*length(hidden_layers)*len_charact*len_cl
 result = cell(num_cases, 3);
 counter = 1;
 
-h = waitbar(0,'Initializing waitbar...');
+%h = waitbar(0,'Initializing waitbar...');
 
 for n = len_types
     for i = len_ids
@@ -29,7 +29,8 @@ for n = len_types
                     for m = len_charact
 
                         perc = (counter*100)/num_cases; 
-                        waitbar(perc/100, h, sprintf('%d%% along...', perc))
+                        %waitbar(perc/100, h, sprintf('%d%% along...', perc))
+                        disp(strcat('Current File: dataset/', data_ids{i}, '.mat'));
                         [result(counter,1), result(counter,2), result(counter,3)] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers, classifications(l), characteristics(m));
                         counter = counter + 1;
                         close all;
