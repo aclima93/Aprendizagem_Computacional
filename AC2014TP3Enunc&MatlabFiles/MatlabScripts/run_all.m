@@ -7,6 +7,7 @@ load('dataset/train_percentages.mat', 'train_percentages');
 load('dataset/hidden_layers.mat', 'hidden_layers');
 load('dataset/characteristics.mat', 'characteristics');
 load('dataset/classifications.mat', 'classifications');
+load('dataset/repetitions.mat', 'repetitions');
 
 
 len_types = length(net_types);
@@ -16,11 +17,11 @@ len_percs = length(train_percentages);
 len_charact = length(characteristics);
 len_class = length(classifications);
 len_hidden_layers = length(hidden_layers);
-num_cases = len_ids*len_funcs*len_percs*len_hidden_layers*len_charact*len_class;
+num_cases = len_types * len_ids * len_funcs * len_percs * len_hidden_layers * len_charact * len_class * repetitions;
 result = cell(num_cases, 3);
 counter = 1;
 
-%h = waitbar(0,'Initializing waitbar...');
+h = waitbar(0, 'Initializing waitbar...');
 
 for n = 1:len_types
     for i = 1:len_ids
@@ -30,12 +31,18 @@ for n = 1:len_types
                     for m = 1:len_charact
                         for o = 1:len_hidden_layers
                             
-                            perc = (counter*100)/num_cases; 
-                            %waitbar(perc/100, h, sprintf('%d%% along...', perc))
-                            disp(strcat('Current File: dataset/', data_ids{i}, '.mat'));
-                            [result(counter,1), result(counter,2), result(counter,3)] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications(l), characteristics(m));
-                            counter = counter + 1;
-                            close all;
+                            for r = 1:repetitions
+                                
+                                perc = (counter*100)/num_cases;
+                                waitbar(perc/100, h, sprintf('%.3f%% - %d / %d', perc, counter, num_cases));
+                                [filename, performance, network_ouputs] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications(l), characteristics(m));
+                                result(counter, 1) = {filename};
+                                result(counter, 2) = {performance};
+                                result(counter, 3) = {network_ouputs};
+                                counter = counter + 1;
+                                close all;
+                                
+                            end
                             
                         end
                     end
@@ -46,6 +53,9 @@ for n = 1:len_types
 end
 
 close(h);
-%TODO: use the results gathered?
+
+save('dataset/result.mat', 'result');
+
+analyse_results;
 
 

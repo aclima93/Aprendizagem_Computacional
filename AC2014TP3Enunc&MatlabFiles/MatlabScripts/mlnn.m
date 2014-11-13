@@ -8,35 +8,22 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     % filter the primary components based on the number of desired characteristics chosen by the user
     if (num_characteristics < 1) || (num_characteristics > 29)
         
-        %figure(1);
+        [~, reduced_data] = princomp(train_set);
+        %{
+        figure(1);
         [primary_components, reduced_data] = princomp(train_set);
-        %biplot(primary_components(:,1:2), 'Scores', reduced_data(:,1:2), 'VarLabels', {'X1' 'X2' 'X3' 'X4'});
-        %print(1, '-dpng', strcat(filename, '__correlations'));
+        biplot(primary_components(:,1:2), 'Scores', reduced_data(:,1:2), 'VarLabels', {'X1' 'X2' 'X3' 'X4'});
+        print(1, '-dpng', strcat(filename, '__correlations'));
+        %}
         
     else
-        
-        % Compute sample correlation and p-values.
-        % Find significant correlations, don't count the target
-        % 1 and -1 are the most important, 0 is worthless
-        [r,p] = corrcoef(horzcat(train_set', target(1,:)'));
-        [x,~] = size(p);
-        indexed_corr = vertcat(abs(r(length(p),1:(x-1))), 1:(x-1));
-        reduced_correlations = cell(length(indexed_corr), 1);
-        
-        for i = 1:length(indexed_corr)
-            reduced_correlations{i} = indexed_corr(1,i);
-        end
-        
-        % sort by correlation but maintain index information and filter the best X elements
-        temp = [reduced_correlations{:}];
-        [~, ind] = sort( temp(1,:), 'descend');
-        best_rc_ind = ind(1:num_characteristics);
-        reduced_data = train_set(best_rc_ind, :);
+        reduced_data = reduce_data_set(train_set, target, num_characteristics);
         
     end
     
     %save('reduced_data.mat','reduced_data');
     train_set = reduced_data; % the reduced data is our new training data
+    test_set = reduce_data_set(test_set, test_target, num_characteristics);
 
     %% end of disclaimer
     % - ACL
@@ -47,7 +34,9 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
         net = feedforwardnet(hidden_layers, train_function);
     end
 
-    save('test_set.mat','test_set');
+    % disable visual output
+    net.trainParam.showWindow = false;
+    net.trainParam.showCommandLine = false;
     
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
         net = train(net, train_set, target, 'useGPU', 'yes');
@@ -65,24 +54,9 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     end
     
     %% calculate performance
-    performance = perform(net, target, network_outputs);
-        
-    
-    %% data plots
-    %plot and print classification
-    figure(2);
-    plot(network_outputs(1,:)','g');
-    hold on;
-    plot(test_target(1,:)','b');
-    hold off;
-    figure(3);
-    plot(network_outputs(2,:)','r');
-    hold on;
-    plot(test_target(2,:)','k');
-    hold off;
-    print(2, '-dpng', strcat(filename, '__1'));
-    print(3, '-dpng', strcat(filename, '__2'));
-
+    performance = perform(net, test_target, network_outputs);
+                
+    %{
     %create it in a MATLAB figure
     jframe = view(net);
     hFig = figure('Menubar','none', 'Position',[100 100 565 166]);
@@ -98,5 +72,25 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     set(hFig, 'PaperPositionMode', 'auto');
     saveas(hFig, strcat(filename, '__netconfig'), 'png');
     close(hFig);
+    %}
+    
+    %plot and print classification
+    %{
+    figure(2);
+    plot(network_outputs(1,:)','g');
+    hold on;
+    plot(test_target(1,:)','b');
+    hold off;
+    print(2, '-dpng', strcat(filename, '__netoutput1'));
+    %}
+    
+    %{
+    figure(3);
+    plot(network_outputs(2,:)','r');
+    hold on;
+    plot(test_target(2,:)','k');
+    hold off;
+    print(3, '-dpng', strcat(filename, '__netoutput2'));
+    %}
 
 end
