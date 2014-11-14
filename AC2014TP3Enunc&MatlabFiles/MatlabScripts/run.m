@@ -5,7 +5,7 @@ n_char = 29;
 train_funcs = {'trainlm', 'traingd'}%, 'trainbfg', 'trainrp'};
 train_percentages = [0.7, 0.75, 0.65];
 hidden_layers = {[ceil(log2(n_char))], [n_char], [n_char, n_char], [ceil(log2(n_char)), ceil(log2(n_char))]};
-characteristics = [n_char, ceil(n_char/2), 0]; % all, half, primary components
+characteristics = [n_char, ceil(n_char/2)]; % all, half, primary components
 classifications = {'10 consecutive ictals', 'at least 5 of the last 10 are ictals', 'single point'};
 repetitions = 3;
 

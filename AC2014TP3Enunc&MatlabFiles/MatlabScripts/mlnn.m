@@ -2,20 +2,23 @@ function [performance, network_outputs, binary_results, results_data] = mlnn( ne
 %% multi-layer neural network
 
 
-    %% DISCLAIMER: é bem provavel que isto esteja mal visto que foi feito por mim
+    %% DISCLAIMER: ï¿½ bem provavel que isto esteja mal visto que foi feito por mim
     % - ACL
 
     % filter the primary components based on the number of desired characteristics chosen by the user
     if (num_characteristics < 1) || (num_characteristics > 29)
-        [~, reduced_data] = princomp(train_set);
+        %[~, reduced_data] = princomp(train_set);
+        reduced_data = train_set;
+        test_set = test_set;
     else
         reduced_data = reduce_data_set(train_set, target, num_characteristics);
+        test_set = reduce_data_set(test_set, test_target, num_characteristics);
+
     end
     
     %save('reduced_data.mat','reduced_data');
     train_set = reduced_data; % the reduced data is our new training data
-    test_set = reduce_data_set(test_set, test_target, num_characteristics);
-
+    
     %% end of disclaimer
     % - ACL
     

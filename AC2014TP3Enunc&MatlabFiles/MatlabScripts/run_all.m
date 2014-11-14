@@ -19,7 +19,7 @@ len_class = length(classifications);
 len_hidden_layers = length(hidden_layers);
 num_cases = len_types * len_ids * len_funcs * len_percs * len_hidden_layers * len_charact * len_class * repetitions;
 results = cell(num_cases, 5);
-counter = 10;
+counter = 1;
 
 h = waitbar(0, 'Initializing waitbar...');
 
