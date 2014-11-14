@@ -18,8 +18,8 @@ len_charact = length(characteristics);
 len_class = length(classifications);
 len_hidden_layers = length(hidden_layers);
 num_cases = len_types * len_ids * len_funcs * len_percs * len_hidden_layers * len_charact * len_class * repetitions;
-result = cell(num_cases, 3);
-counter = 1;
+results = cell(num_cases, 5);
+counter = 10;
 
 h = waitbar(0, 'Initializing waitbar...');
 
@@ -35,10 +35,12 @@ for n = 1:len_types
                                 
                                 perc = (counter*100)/num_cases;
                                 waitbar(perc/100, h, sprintf('%.3f%% - %d / %d', perc, counter, num_cases));
-                                [filename, performance, network_ouputs] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
-                                result(counter, 1) = {filename};
-                                result(counter, 2) = {performance};
-                                result(counter, 3) = {network_ouputs};
+                                [filename, performance, network_outputs, binary_resultss, resultss_data] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
+                                results(counter, 1) = {filename};
+                                results(counter, 2) = {performance};
+                                results(counter, 3) = {network_outputs};
+                                results(counter, 4) = {binary_resultss};
+                                results(counter, 5) = {resultss_data};
                                 counter = counter + 1;
                                 close all;
                                 
@@ -54,7 +56,7 @@ end
 
 close(h);
 
-save('dataset/result.mat', 'result');
+save('dataset/results.mat', 'results');
 
 analyse_results;
 

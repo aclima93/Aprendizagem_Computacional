@@ -1,4 +1,4 @@
-function [performance, network_outputs] = mlnn( net_type, hidden_layers, target, train_function, train_set, test_set, test_target, classification_method, num_characteristics, filename)
+function [performance, network_outputs, binary_results, results_data] = mlnn( net_type, hidden_layers, target, train_function, train_set, test_set, test_target, classification_method, num_characteristics, filename)
 %% multi-layer neural network
 
 
@@ -19,35 +19,34 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     %% end of disclaimer
     % - ACL
     
-    if strcmp(net_type, 'feedforwardnet') == 1
+    if strcmp(net_type, 'Feed Forward Net') == 1
         net = feedforwardnet(hidden_layers, train_function);
-    elseif strcmp(net_type, 'fitnet') == 1
+    elseif strcmp(net_type, 'Fitting Net') == 1
         net = fitnet(hidden_layers, train_function);
-    elseif strcmp(net_type, 'cascadeforwardnet') == 1
+    elseif strcmp(net_type, 'Cascade Forward Net') == 1
         net = cascadeforwardnet(hidden_layers, train_function);
+    elseif strcmp(net_type, 'Pattern Recognition Net') == 1
+        net = patternnet(hidden_layers, train_function);
     end
 
     % disable visual output
     net.trainParam.showWindow = false;
     
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
-        net = train(net, train_set, target, 'useGPU', 'yes');
+        [net, tr] = train(net, train_set, target, 'useGPU', 'yes');
         network_outputs = net(test_set, 'useGPU', 'yes');
     else
-        net = train(net, train_set, target);
+        [net, tr] = train(net, train_set, target);
         network_outputs = net(test_set);
-    end
-    
-    %% apply classification method
-    %% TODO: %%
-    if strcmp(classification_method, '10 consecutive ictals') == 1
-    elseif strcmp(classification_method, 'at least 5 of the last 10 are ictals') == 1
-    elseif strcmp(classification_method, 'single point') == 1
     end
     
     %% calculate performance
     performance = perform(net, test_target, network_outputs);
-                
+    
+    
+    %% apply classification method
+    [binary_results, results_data] = classify_results(classification_method, network_outputs, test_target);
+                  
     %{
     %create it in a MATLAB figure
     jframe = view(net);
@@ -66,23 +65,17 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     close(hFig);
     %}
     
-    %plot and print classification
+    %plot and print data
     %{
-    figure(2);
-    plot(network_outputs(1,:)','g');
-    hold on;
-    plot(test_target(1,:)','b');
-    hold off;
-    print(2, '-dpng', strcat(filename, '__netoutput1'));
+    figure(1);
+    plottrainstate(tr);
+    print(1, '-dpng', strcat(filename, '__plottrainstate'));
     %}
     
     %{
-    figure(3);
-    plot(network_outputs(2,:)','r');
-    hold on;
-    plot(test_target(2,:)','k');
-    hold off;
-    print(3, '-dpng', strcat(filename, '__netoutput2'));
+    figure(2);
+    plotperform(tr)
+    print(2, '-dpng', strcat(filename, '__plotperform'));
     %}
-
+    
 end

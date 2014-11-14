@@ -1,12 +1,13 @@
 
-net_types = {'feedforwardnet', 'fitnet', 'cascadeforwardnet'};
+net_types = {'Feed Forward Net', 'Fitting Net', 'Cascade Forward Net', 'Pattern Recognition Net'};
 data_ids = {'92202', '63502'};
-train_funcs = {'trainlm', 'traingd', 'trainbfg'}; %{'trainlm', 'trainbr', 'traingd', 'traincgb', 'trainbfg', 'trainscg', 'traingdm'};
-train_percentages = [0.7, 0.725, 0.75, 0.675, 0.65];
-hidden_layers = {[ceil(log2(29))], [29], [29, 29]}; %[20, 20, 20, 20, 20];
-characteristics = [29, 15, 0]; % half, all or only primary components
+n_char = 29;
+train_funcs = {'trainlm', 'traingd'}%, 'trainbfg', 'trainrp'};
+train_percentages = [0.7, 0.75, 0.65];
+hidden_layers = {[ceil(log2(n_char))], [n_char], [n_char, n_char], [ceil(log2(n_char)), ceil(log2(n_char))]};
+characteristics = [n_char, ceil(n_char/2), 0]; % all, half, primary components
 classifications = {'10 consecutive ictals', 'at least 5 of the last 10 are ictals', 'single point'};
-repetitions = 1;
+repetitions = 3;
 
 
 save('dataset/net_types.mat','net_types');
