@@ -35,7 +35,7 @@ for n = 1:len_types
                                 
                                 perc = (counter*100)/num_cases;
                                 waitbar(perc/100, h, sprintf('%.3f%% - %d / %d', perc, counter, num_cases));
-                                [filename, performance, network_ouputs] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications(l), characteristics(m));
+                                [filename, performance, network_ouputs] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
                                 result(counter, 1) = {filename};
                                 result(counter, 2) = {performance};
                                 result(counter, 3) = {network_ouputs};

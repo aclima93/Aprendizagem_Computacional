@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 12-Nov-2014 23:14:48
+% Last Modified by GUIDE v2.5 13-Nov-2014 23:03:10
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -55,8 +55,13 @@ function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
 %load data
 load('dataset/data_ids.mat', 'data_ids');
 load('dataset/train_funcs.mat', 'train_funcs');
-load('dataset/train_percentages.mat', 'train_percentages');
-load('dataset/hidden_layers.mat', 'hidden_layers');
+load('dataset/net_types.mat', 'net_types');
+load('dataset/classifications.mat', 'classifications');
+
+set(handles.data_set_popupmenu,'String', data_ids);
+set(handles.learning_function_popupmenu,'String', train_funcs);
+set(handles.net_type_popupmenu,'String', net_types);
+set(handles.classification_method_popupmenu,'String', classifications);
 
 
 % Choose default command line output for GUI
@@ -69,10 +74,13 @@ guidata(hObject, handles);
 % so window can get raised using GUI.
 if strcmp(get(hObject,'Visible'),'off')
     %plot(rand(5));
+    %{
     temp = get(handles.data_set_popupmenu, 'String');
-    data_id = temp(get(handles.data_set_popupmenu, 'Value'));
-    
-    %plot data set?
+    data_id = temp{get(handles.data_set_popupmenu, 'Value')};
+    data = load(strcat('dataset/', data_id, '.mat'));
+    input_set = data.FeatVectSel';
+    plot( input_set );
+    %}
     
 end
 
@@ -140,45 +148,23 @@ function run_simulation_pushbutton_Callback(hObject, eventdata, handles)
     net_type = temp(get(handles.net_type_popupmenu, 'Value'));
 
     temp = get(handles.data_set_popupmenu, 'String');
-    data_id = temp(get(handles.data_set_popupmenu, 'Value'));
+    data_id = temp{get(handles.data_set_popupmenu, 'Value')};
     
     train_percentage = get(handles.training_percentage_edit, 'String');
     
     temp = get(handles.learning_function_popupmenu, 'String');
     train_func = temp(get(handles.learning_function_popupmenu, 'Value'));
     
-    num_hidden_layers = get(handles.hidden_layers_edit, 'String');
-    hidden_layers_size = get(handles.hidden_layers_size_edit, 'String');
+    num_hidden_layers = str2num(get(handles.hidden_layers_edit, 'String'));
+    hidden_layers_size = str2num(get(handles.hidden_layers_size_edit, 'String'));
     hidden_layers = ones(1, num_hidden_layers) * hidden_layers_size;
     
-    classification_method = 
+    classification_method = get(handles.net_type_popupmenu, 'Value');
     
-    num_characteristics = 
+    num_characteristics = str2num(get(handles.num_characteristics_edit, 'String'));
     
     run_one(net_type, data_id, train_percentage, train_func, hidden_layers, classification_method, num_characteristics);
 
-
-
-function output_layer_size_edit_Callback(hObject, eventdata, handles)
-% hObject    handle to output_layer_size_edit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of output_layer_size_edit as text
-%        str2double(get(hObject,'String')) returns contents of output_layer_size_edit as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function output_layer_size_edit_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to output_layer_size_edit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
 
 
 % --- Executes on selection change in data_set_popupmenu.
@@ -228,18 +214,18 @@ end
 
 
 
-function characteristics_edit_Callback(hObject, eventdata, handles)
-% hObject    handle to characteristics_edit (see GCBO)
+function num_characteristics_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to num_characteristics_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of characteristics_edit as text
-%        str2double(get(hObject,'String')) returns contents of characteristics_edit as a double
+% Hints: get(hObject,'String') returns contents of num_characteristics_edit as text
+%        str2double(get(hObject,'String')) returns contents of num_characteristics_edit as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function characteristics_edit_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to characteristics_edit (see GCBO)
+function num_characteristics_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to num_characteristics_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -286,29 +272,6 @@ function hidden_layers_size_edit_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function hidden_layers_size_edit_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to hidden_layers_size_edit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function epochs_edit_Callback(hObject, eventdata, handles)
-% hObject    handle to epochs_edit (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of epochs_edit as text
-%        str2double(get(hObject,'String')) returns contents of epochs_edit as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function epochs_edit_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to epochs_edit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -526,27 +489,24 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over radiobutton1.
-function radiobutton1_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to radiobutton1 (see GCBO)
+% --- Executes on selection change in classification_method_popupmenu.
+function classification_method_popupmenu_Callback(hObject, eventdata, handles)
+% hObject    handle to classification_method_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.classification_method = 1;
+
+% Hints: contents = cellstr(get(hObject,'String')) returns classification_method_popupmenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from classification_method_popupmenu
 
 
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over radiobutton1.
-function radiobutton2_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to radiobutton2 (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function classification_method_popupmenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to classification_method_popupmenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.classification_method = 2;
+% handles    empty - handles not created until after all CreateFcns called
 
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over radiobutton1.
-function radiobutton3_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to radiobutton3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.classification_method = 3;
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

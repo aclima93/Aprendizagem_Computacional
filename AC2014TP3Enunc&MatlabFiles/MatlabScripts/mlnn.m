@@ -7,18 +7,9 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
 
     % filter the primary components based on the number of desired characteristics chosen by the user
     if (num_characteristics < 1) || (num_characteristics > 29)
-        
         [~, reduced_data] = princomp(train_set);
-        %{
-        figure(1);
-        [primary_components, reduced_data] = princomp(train_set);
-        biplot(primary_components(:,1:2), 'Scores', reduced_data(:,1:2), 'VarLabels', {'X1' 'X2' 'X3' 'X4'});
-        print(1, '-dpng', strcat(filename, '__correlations'));
-        %}
-        
     else
         reduced_data = reduce_data_set(train_set, target, num_characteristics);
-        
     end
     
     %save('reduced_data.mat','reduced_data');
@@ -30,13 +21,14 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     
     if strcmp(net_type, 'feedforwardnet') == 1
         net = feedforwardnet(hidden_layers, train_function);
-    else
-        net = feedforwardnet(hidden_layers, train_function);
+    elseif strcmp(net_type, 'fitnet') == 1
+        net = fitnet(hidden_layers, train_function);
+    elseif strcmp(net_type, 'cascadeforwardnet') == 1
+        net = cascadeforwardnet(hidden_layers, train_function);
     end
 
     % disable visual output
     net.trainParam.showWindow = false;
-    net.trainParam.showCommandLine = false;
     
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
         net = train(net, train_set, target, 'useGPU', 'yes');
@@ -47,10 +39,10 @@ function [performance, network_outputs] = mlnn( net_type, hidden_layers, target,
     end
     
     %% apply classification method
-    if classification_method == 1
-    elseif classification_method == 2
-    elseif classification_method == 3
-    else
+    %% TODO: %%
+    if strcmp(classification_method, '10 consecutive ictals') == 1
+    elseif strcmp(classification_method, 'at least 5 of the last 10 are ictals') == 1
+    elseif strcmp(classification_method, 'single point') == 1
     end
     
     %% calculate performance

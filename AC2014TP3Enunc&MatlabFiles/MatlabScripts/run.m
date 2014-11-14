@@ -1,12 +1,13 @@
 
-net_types = {'feedforwardnet'};
-data_ids = {'92202'}; %{'92202', '112502', '63502'};
-train_funcs = {'trainlm'}; %{'trainlm', 'traingd', 'traincgb', 'trainbfg', 'trainscg', 'traingdm'};
-train_percentages = 0.7; %[0.7, 0.725, 0.675, 0.75, 0.65, 0.8, 0.6, 0.85, 0.55];
+net_types = {'feedforwardnet', 'fitnet', 'cascadeforwardnet'};
+data_ids = {'92202', '63502'};
+train_funcs = {'trainlm', 'traingd', 'trainbfg'}; %{'trainlm', 'trainbr', 'traingd', 'traincgb', 'trainbfg', 'trainscg', 'traingdm'};
+train_percentages = [0.7, 0.725, 0.75, 0.675, 0.65];
 hidden_layers = {[ceil(log2(29))], [29], [29, 29]}; %[20, 20, 20, 20, 20];
 characteristics = [29, 15, 0]; % half, all or only primary components
-classifications = 1:3; % 1-1, 10, 5/10
-repetitions = 10;
+classifications = {'10 consecutive ictals', 'at least 5 of the last 10 are ictals', 'single point'};
+repetitions = 1;
+
 
 save('dataset/net_types.mat','net_types');
 save('dataset/data_ids.mat','data_ids');
@@ -20,12 +21,13 @@ save('dataset/repetitions.mat', 'repetitions');
 choice = questdlg('Run all simulations?', 'Run all simulations?','Yes','No', 'No');
 switch choice
     case 'No'
-        GUI;
+        while 1 == 1
+            GUI;
+        end
              
     otherwise
         run_all;
         
-
 end
 
 %% clean environment
