@@ -60,6 +60,9 @@ function [binary_results, results_data] = classify_results(method, results, expe
     sensitivity = t_p / (t_p + f_n);
     specificity = t_n / (t_n + f_p);
     
+    %% correctly classified / total
+    accuracy = (t_p + t_n) / (t_p + t_n + f_p + f_n); 
+    
     binary_positives = length(e_r_p);
     binary_negatives = length(e_r_n);
     invalids = find(binary_results == -1);
@@ -67,7 +70,7 @@ function [binary_results, results_data] = classify_results(method, results, expe
     expected_positives = length(e_r_p);
     expected_negatives = length(e_r_n);
     
-    results_data = [specificity, sensitivity, t_p, t_n, f_p, f_n, binary_positives, binary_negatives, invalids, expected_positives, expected_negatives];
+    results_data = [accuracy, specificity, sensitivity, t_p, t_n, f_p, f_n, binary_positives, binary_negatives, invalids, expected_positives, expected_negatives];
 
 
 end

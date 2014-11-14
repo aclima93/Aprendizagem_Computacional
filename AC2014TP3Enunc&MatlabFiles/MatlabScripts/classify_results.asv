@@ -12,20 +12,18 @@ function [binary_results, results_data] = classify_results(method, results, expe
     binary_results(i_ones) = 1;
     binary_results(i_zeros) = 0;
     
-    
     %% evaluate binary results based on classification method
-    if strcmp(method, '10 consecutive ictal_class') == 1
+    if strcmp(method, '10 consecutive ictals') == 1
         window_size = 10;
         positives_size = 10;
-    elseif strcmp(method, 'at least 5 of the last 10 are ictal_class') == 1
+    elseif strcmp(method, 'at least 5 of the last 10 are ictals') == 1
         window_size = 10;
         positives_size = 5;
     elseif strcmp(method, 'single point') == 1
         window_size = 1;
         positives_size = 1;
     end
-    
-    window
+   
 
     %% classify points
     ictal_class = zeros(y - window_size, 1);
@@ -62,6 +60,9 @@ function [binary_results, results_data] = classify_results(method, results, expe
     sensitivity = t_p / (t_p + f_n);
     specificity = t_n / (t_n + f_p);
     
+    %% correctly classifyed
+    accuracy = (t_p + t_n) / (t_p + t_n + f_p + f_n); 
+    
     binary_positives = length(e_r_p);
     binary_negatives = length(e_r_n);
     invalids = find(binary_results == -1);
@@ -69,7 +70,7 @@ function [binary_results, results_data] = classify_results(method, results, expe
     expected_positives = length(e_r_p);
     expected_negatives = length(e_r_n);
     
-    results_data = [specificity, sensitivity, t_p, t_n, f_p, f_n, binary_positives, binary_negatives, invalids, expected_positives, expected_negatives];
+    results_data = [accuracy, specificity, sensitivity, t_p, t_n, f_p, f_n, binary_positives, binary_negatives, invalids, expected_positives, expected_negatives];
 
 
 end

@@ -55,6 +55,7 @@ function [train,train_target,test,test_target] = prep_dataset(dataset,target_dat
     
     %create the output matrix
     %FIXME: falta acrescentar ao size os Not crysis
+    
     train = zeros(final_trainSize,NUM_COLUMNS);
     train_target = zeros(final_trainSize,1);
     test = zeros(final_testSize,NUM_COLUMNS);

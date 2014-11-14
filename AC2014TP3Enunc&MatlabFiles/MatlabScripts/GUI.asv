@@ -164,8 +164,7 @@ function run_simulation_pushbutton_Callback(hObject, eventdata, handles)
     num_characteristics = str2num(get(handles.num_characteristics_edit, 'String'));
     
     [~, ~, ~, ~, results_data] = run_one(net_type, data_id, train_percentage, train_func, hidden_layers, classification_method, num_characteristics);
-    
-    set(handles.accuracy_edit,'String', results_data(1)*100); % accuracy
+    set(handles.accuracy_edit,'String', results_data(1)); % accuracy
     set(handles.specificity_edit,'String', results_data(2)*100); % specificity
     set(handles.sensitivity_edit,'String', results_data(3)*100); % sensitivity
     set(handles.true_positives_edit,'String', results_data(4)); % t_p
