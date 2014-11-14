@@ -35,7 +35,6 @@ function [performance, network_outputs, binary_results, results_data] = mlnn( ne
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
         [net, tr] = train(net, train_set, target, 'useGPU', 'yes');
         size(train_set)
-        size(test_set)
         network_outputs = net(test_set, 'useGPU', 'yes');
     else
         [net, tr] = train(net, train_set, target);
