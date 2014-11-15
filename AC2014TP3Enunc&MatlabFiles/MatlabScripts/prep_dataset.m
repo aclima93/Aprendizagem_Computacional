@@ -1,6 +1,6 @@
 function [train,train_target,test,test_target] = prep_dataset(dataset,target_dataset,trainPrecentage)
    
-    [NUM_LINES,NUM_COLUMNS] = size(dataset);
+    [~,NUM_COLUMNS] = size(dataset);
 
 %% How can we do this, in a easy way?
 %% http://weknowmemes.com/generator/uploads/generated/g1369409960206058073.jpg
@@ -23,7 +23,6 @@ function [train,train_target,test,test_target] = prep_dataset(dataset,target_dat
     dsig = diff([1 tsig 1]);
     startIndex = find(dsig < 0);
     endIndex = find(dsig > 0)-1;
-    duration = endIndex-startIndex+1;
 
     %% Finally,
     %use the method from my answer to the linked
