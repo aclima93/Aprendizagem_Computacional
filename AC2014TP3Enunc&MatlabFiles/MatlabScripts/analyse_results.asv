@@ -32,7 +32,6 @@ plot( performance_means);
 hold off;
 print(counter, '-dpng', 'images/results/performances');
 counter = counter + 1;
-close;
 
 
 
@@ -58,26 +57,21 @@ for j = 2: len_results_data+1
     hold off;
     print(counter, '-dpng', strcat('images/results/', data_name{j-1}));
     counter = counter + 1;
-    close;
+    
     
     % get num_best best of each aspect and save their matrix
     num_best = 20;
-    sorted = sortrows(results_data_means, j);
-    sorted = flipud(sorted); %magia do matlab, invert ordem da matrix nas colunas (1º passa a último e vice-versa)
-    best = cell(num_best, 2);
-    best(:, 1) = unique_sim(sorted(1:num_best,1));
-    for i = 1:num_best
-        best(i, 2) = {sorted(i, j)};
-    end
+    best = sortrows(results_data_means, j);
+    best = 
+    best = horzcat(best(1:num_best,1), best(1:num_best,j));
     save(strcat('images/results/X_best/', num2str(num_best), '_', data_name{j-1}, '.mat'), 'best');    
 
 
 end
 
 
-%% network outputs and binary outputs 
 
+% print the network outputs and binary outputs just for show in report?
 
-%% clean environment
 close all;
-clear all;
+
