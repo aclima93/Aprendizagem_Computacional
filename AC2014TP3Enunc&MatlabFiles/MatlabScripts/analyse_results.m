@@ -70,7 +70,12 @@ for j = 2: len_results_data+1
 end
 
 
+%% CARDOSO: se quiseres correr isto para os 20 melhores de cada caso não 
+% deve ser preciso alterar muita coisa, mas não corras para todas as 
+% simulações ou então morrer com o passar do tempo x']
+
 %% network outputs and binary outputs
+%{
 for idx = 1:num_sim
 
     net_outputs = results{idx, 3};

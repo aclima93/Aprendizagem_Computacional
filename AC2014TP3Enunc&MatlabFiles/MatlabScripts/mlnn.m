@@ -1,4 +1,4 @@
-function [performance, network_outputs, binary_results, results_data] = mlnn( net_type, hidden_layers, target, train_function, train_set, test_set, test_target, classification_method, num_characteristics, filename)
+function [performance, network_outputs, binary_results, results_data] = mlnn( showUI, net_type, hidden_layers, target, train_function, train_set, test_set, test_target, classification_method, num_characteristics, filename)
 %% multi-layer neural network
 
 
@@ -33,7 +33,9 @@ function [performance, network_outputs, binary_results, results_data] = mlnn( ne
     end
 
     % disable visual output
-    net.trainParam.showWindow = false;
+    if showUI == 0
+        net.trainParam.showWindow = false;
+    end
     
     if strcmp(version('-release'),'2014a') == 1 && gpuDeviceCount == 1
         [net, tr] = train(net, train_set, target, 'useGPU', 'yes');

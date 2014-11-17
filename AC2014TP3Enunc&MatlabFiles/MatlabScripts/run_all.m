@@ -22,6 +22,7 @@ results = cell(num_cases, 5);
 counter = 1;
 
 h = waitbar(0, 'Initializing waitbar...');
+showUI = 0;
 
 for n = 1:len_types
     for i = 1:len_ids
@@ -35,7 +36,7 @@ for n = 1:len_types
                                 
                                 perc = (counter*100)/num_cases;
                                 waitbar(perc/100, h, sprintf('%.3f%% - %d / %d', perc, counter, num_cases));
-                                [filename, performance, network_outputs, binary_results, results_data] = run_one(net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
+                                [filename, performance, network_outputs, binary_results, results_data] = run_one(showUI, net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
                                 results(counter, 1) = {filename};
                                 results(counter, 2) = {performance};
                                 results(counter, 3) = {network_outputs};
