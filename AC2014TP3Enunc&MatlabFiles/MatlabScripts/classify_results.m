@@ -65,12 +65,11 @@ function [binary_results, results_data] = classify_results(method, results, expe
     
     binary_positives = length(e_r_p);
     binary_negatives = length(e_r_n);
-    invalids = find(binary_results == -1);
+    invalids = length(find(binary_results == -1));
    
     expected_positives = length(e_r_p);
     expected_negatives = length(e_r_n);
     
     results_data = [accuracy, specificity, sensitivity, t_p, t_n, f_p, f_n, binary_positives, binary_negatives, invalids, expected_positives, expected_negatives];
-
 
 end

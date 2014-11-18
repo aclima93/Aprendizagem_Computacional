@@ -66,13 +66,39 @@ for j = 2: len_results_data+1
     end
     save(strcat('images/results/X_best/', num2str(num_best), '_', data_name{j-1}, '.mat'), 'best');    
 
+    
+    %% network outputs and binary outputs for best of each category
+    idx = sorted(1, 1);
+
+    net_outputs = results{idx, 3};
+    binary_outputs = results{idx, 4};
+
+    figure('Visible', 'off');
+
+    subplot(2,2,1)
+    plot( net_outputs(1,:) );
+    subplot(2,2,2)
+    plot( net_outputs(2,:) );
+
+    len = length(binary_outputs(1,:));
+    h1 = subplot(2,2,3);
+    plot( binary_outputs(1,:) );
+    h2 = subplot(2,2,4);
+    plot( binary_outputs(2,:) );
+    axis([h1 h2],[0 len -0.5 1.5]);
+
+    saveas(gcf, strcat('images/simulations/best/', num2str(idx), '_has_best_', data_name{j-1}), 'png');
+
 
 end
+
 
 
 %% CARDOSO: se quiseres correr isto para os 20 melhores de cada caso não 
 % deve ser preciso alterar muita coisa, mas não corras para todas as 
 % simulações ou então morrer com o passar do tempo x']
+
+%% NEVERMMIMND: já o fiz ;)
 
 %% network outputs and binary outputs
 %{
@@ -88,15 +114,17 @@ for idx = 1:num_sim
     subplot(2,2,2)
     plot( net_outputs(2,:) );
 
+    len = length(binary_outputs(1,:));
     subplot(2,2,3)
-    plot( binary_outputs(1,:) );
+    h1 = plot( binary_outputs(1,:) );
     subplot(2,2,4)
-    plot( binary_outputs(2,:) );
+    h2 = plot( binary_outputs(2,:) );
+    axis([h1 h2],[0 len -0.5 1.5])
 
     saveas(gcf,strcat('images/simulations/', num2str(idx)),'png');
 
 end    
-
+%}
 
 
 %% clean environment

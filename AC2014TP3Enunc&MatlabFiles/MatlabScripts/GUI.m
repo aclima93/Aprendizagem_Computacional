@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 14-Nov-2014 22:22:23
+% Last Modified by GUIDE v2.5 18-Nov-2014 11:08:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -168,7 +168,7 @@ function run_simulation_pushbutton_Callback(hObject, eventdata, handles)
     
     showUI = 1;
     
-    [~, ~, ~, ~, results_data] = run_one(showUI, net_type, data_id, train_percentage, train_func, hidden_layers, classification_method, num_characteristics);
+    [~, performance, network_outputs, binary_results, results_data] = run_one(showUI, net_type, data_id, train_percentage, train_func, hidden_layers, classification_method, num_characteristics);
     
     set(handles.accuracy_edit,'String', results_data(1)*100); % accuracy
     set(handles.specificity_edit,'String', results_data(2)*100); % specificity
@@ -182,6 +182,21 @@ function run_simulation_pushbutton_Callback(hObject, eventdata, handles)
     set(handles.invalids_edit,'String', results_data(10)); % invalids
     set(handles.expected_ictals_edit,'String', results_data(11)); % expected_positives
     set(handles.expected_non_ictals_edit,'String', results_data(12)); % expected_negatives
+    
+    set(handles.performance_edit,'String', performance); % expected_negatives
+    
+    figure;
+    subplot(2,2,1)
+    plot( network_outputs(1,:) );
+    subplot(2,2,2)
+    plot( network_outputs(2,:) );
+
+    len = length(binary_results(1,:));
+    h1 = subplot(2,2,3);
+    plot( binary_results(1,:) );
+    h2 = subplot(2,2,4);
+    plot( binary_results(2,:) );
+    axis([h1 h2],[0 len -0.5 1.5]);
     
 
 
@@ -643,3 +658,27 @@ function invalids_edit_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function performance_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to performance_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of performance_edit as text
+%        str2double(get(hObject,'String')) returns contents of performance_edit as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function performance_edit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to performance_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+

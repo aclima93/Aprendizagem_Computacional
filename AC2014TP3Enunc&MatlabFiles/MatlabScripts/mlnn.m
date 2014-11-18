@@ -52,6 +52,7 @@ function [performance, network_outputs, binary_results, results_data] = mlnn( sh
     %% apply classification method
     [binary_results, results_data] = classify_results(classification_method, network_outputs, test_target);
                   
+    
     %{
     %create it in a MATLAB figure
     jframe = view(net);
