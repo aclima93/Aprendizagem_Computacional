@@ -15,7 +15,7 @@ function [filename, performance, network_outputs, binary_results, results_data] 
     test_set = test_set';
     test_target = test_target';
 
-    filename = strcat(imgdir, net_type, '/', data_id, '/', num2str(num_neurons), '_', num2str(num_neurons_step), '_', num2str(train_percentage), '_', classification_method, '_', num2str(num_characteristics));
+    filename = strcat(imgdir, net_type, '/', data_id, '/', train_func, '/', num2str(num_neurons), '_', num2str(num_neurons_step), '_', num2str(train_percentage), '_', classification_method, '_', num2str(num_characteristics));
 
 
     % filter the primary components based on the number of desired characteristics chosen by the user
@@ -32,10 +32,9 @@ function [filename, performance, network_outputs, binary_results, results_data] 
     train_set = reduced_data; % the reduced data is our new training data
     
     
-    % train and test
     net = newrb(train_set, target, 0, 1, num_neurons, num_neurons_step);
-    network_outputs = sim(net, test_set);
-    
+
+    network_outputs = sim(net, test_set)
     
     %% calculate performance
     performance = perform(net, test_target, network_outputs);

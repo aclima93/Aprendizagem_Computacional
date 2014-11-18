@@ -32,13 +32,13 @@ function [filename, performance, network_outputs, binary_results, results_data] 
     
     
     if strcmp(net_type, 'Feed Forward Net') == 1
-        net = feedforwardnet(hidden_layers, train_function);
+        net = feedforwardnet(hidden_layers, train_func);
     elseif strcmp(net_type, 'Fitting Net') == 1
-        net = fitnet(hidden_layers, train_function);
+        net = fitnet(hidden_layers, train_func);
     elseif strcmp(net_type, 'Cascade Forward Net') == 1
-        net = cascadeforwardnet(hidden_layers, train_function);
+        net = cascadeforwardnet(hidden_layers, train_func);
     elseif strcmp(net_type, 'Pattern Recognition Net') == 1
-        net = patternnet(hidden_layers, train_function);
+        net = patternnet(hidden_layers, train_func);
     end
 
     % disable visual output

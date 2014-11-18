@@ -28,9 +28,9 @@ switch choice
         end
              
     otherwise
-        run_all;
+        %run_all;
         run_all2;
-        run_all3;
+        %run_all3;
         analyse_results;
         
 end
