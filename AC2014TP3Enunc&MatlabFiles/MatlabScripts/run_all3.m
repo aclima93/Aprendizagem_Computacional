@@ -1,6 +1,6 @@
-%% Batch run simulations for FeedForward related networks
+%% Batch run simulations for 'Radial Basis Function Simulations
 
-load('dataset/net_types.mat','net_types');
+
 load('dataset/data_ids.mat', 'data_ids');
 load('dataset/train_funcs.mat', 'train_funcs');
 load('dataset/train_percentages.mat', 'train_percentages');
@@ -8,6 +8,10 @@ load('dataset/hidden_layers.mat', 'hidden_layers');
 load('dataset/characteristics.mat', 'characteristics');
 load('dataset/classifications.mat', 'classifications');
 load('dataset/repetitions.mat', 'repetitions');
+
+
+net_types = {'Radial Basis Function'};
+repetitions = 1;
 
 
 len_types = length(net_types);
@@ -35,8 +39,8 @@ for n = 1:len_types
                             for r = 1:repetitions
                                 
                                 perc = (counter*100)/num_cases;
-                                waitbar(perc/100, h, sprintf('First batch of tests: %.3f%% - %d / %d', perc, counter, num_cases));
-                                [filename, performance, network_outputs, binary_results, results_data] = mlnn(showUI, net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
+                                waitbar(perc/100, h, sprintf('Third batch of tests: %.3f%% - %d / %d', perc, counter, num_cases));
+                                [filename, performance, network_outputs, binary_results, results_data] = mlnn3(showUI, net_types{n}, data_ids{i}, train_percentages(j), train_funcs{k}, hidden_layers{o}, classifications{l}, characteristics(m));
                                 results(counter, 1) = {filename};
                                 results(counter, 2) = {performance};
                                 results(counter, 3) = {network_outputs};
@@ -57,6 +61,6 @@ end
 
 close(h);
 
-save('dataset/results.mat', 'results');
+save('dataset/results3.mat', 'results');
 
 

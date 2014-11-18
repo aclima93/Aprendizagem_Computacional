@@ -1,4 +1,8 @@
-load('dataset/results.mat', 'results');
+load('dataset/results.mat', 'results1');
+load('dataset/results2.mat', 'results2');
+load('dataset/results3.mat', 'results3');
+
+results = [results1; results2; results3];
 
 [num_sim, num_fields] = size(results);
 
