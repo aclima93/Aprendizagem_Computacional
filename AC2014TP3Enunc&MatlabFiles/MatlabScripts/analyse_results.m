@@ -25,13 +25,11 @@ for i = 1:num_sim2
 end
 for i = 1:num_sim3
     for j = 1:num_fields
-        results(num_sim2+i, j) = results3(i, j);
+        results(num_sim1+num_sim2+i, j) = results3(i, j);
     end
 end
 
 save('dataset/final_results.mat', 'results');
-
-pause;
 
 %{
 1) = filename
