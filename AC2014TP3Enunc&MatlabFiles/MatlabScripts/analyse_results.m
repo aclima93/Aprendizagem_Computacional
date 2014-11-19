@@ -1,10 +1,37 @@
-load('dataset/results.mat', 'results1');
-load('dataset/results2.mat', 'results2');
-load('dataset/results3.mat', 'results3');
 
-results = [results1; results2; results3];
+results1 = struct2cell( load('dataset/results.mat'));
+results2 = struct2cell( load('dataset/results2.mat'));
+results3 = struct2cell( load('dataset/results3.mat'));
 
-[num_sim, num_fields] = size(results);
+results1 = results1{:};
+results2 = results2{:};
+results3 = results3{:};
+
+[num_sim1, num_fields] = size(results1);
+[num_sim2, ~] = size(results2);
+[num_sim3, ~] = size(results3);
+
+num_sim = num_sim1 + num_sim2 + num_sim3;
+results = cell(num_sim, num_fields);
+for i = 1:num_sim1
+    for j = 1:num_fields
+        results(i, j) = results1(i, j);
+    end
+end
+for i = 1:num_sim2
+    for j = 1:num_fields
+        results(num_sim1+i, j) = results2(i, j);
+    end
+end
+for i = 1:num_sim3
+    for j = 1:num_fields
+        results(num_sim2+i, j) = results3(i, j);
+    end
+end
+
+save('dataset/final_results.mat', 'results');
+
+pause;
 
 %{
 1) = filename
