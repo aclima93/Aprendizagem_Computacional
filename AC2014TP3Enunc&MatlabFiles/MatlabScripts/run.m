@@ -1,6 +1,6 @@
 
 net_types = {'Feed Forward Net', 'Cascade Forward Net', 'Pattern Recognition Net'}; %'Fitting Net'
-data_ids = {'92202', '63502'};
+data_ids = {'92202', '63502','112502'};
 n_char = 29;
 min_neu = ceil(log2(n_char));
 train_funcs = {'trainlm', 'traingd'}; %, 'trainbfg', 'trainrp'};
@@ -28,7 +28,7 @@ switch choice
         end
              
     otherwise
-        %run_all;
+        run_all;
         run_all2;
         run_all3;
         analyse_results;

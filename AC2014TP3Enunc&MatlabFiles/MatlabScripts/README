@@ -1,0 +1,4 @@
+Para correr o código, corra o script run.m.
+Ao correr o script, irá ser apresentada uma opção para correr todos os testes.
+Caso pretenda abrir apenas a interface gráfica e personalizar um treino, deve pressonar "No"
+Caso pretenda abrir a interface gráfica, directamente, poderá correr o script GUI.m

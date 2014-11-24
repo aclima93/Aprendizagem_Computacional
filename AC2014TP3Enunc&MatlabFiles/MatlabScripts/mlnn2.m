@@ -17,7 +17,6 @@ function [filename, performance, network_outputs, binary_results, results_data] 
 
     filename = strcat(imgdir, net_type, '/', data_id, '/', train_func, '/', num2str(length(delays)),'/', num2str(length(hidden_layers)), '_', num2str(hidden_layers(1)), '_', num2str(train_percentage), '_', classification_method, '_', num2str(num_characteristics));
 
-
     % filter the primary components based on the number of desired characteristics chosen by the user
     if (num_characteristics < 1) || (num_characteristics > 29)
         %[~, reduced_data] = princomp(train_set);
