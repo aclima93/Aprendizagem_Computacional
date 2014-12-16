@@ -47,7 +47,7 @@ function a = myclassify(drawn_numbers, used_indexes)
         T = horzcat(T,Perfect);
         
         %prompt for transpose end calculate the weights
-        temp = input('\nSelect the desired weighing method:\n 1 - Linear Neuron\n 2 - Hebb\'s Rule\n');
+        temp = input('\nSelect the desired weighing method:\n 1 - Linear Neuron\n 2 - Hebb Rule\n');
         if (temp == 1)
             Wp = T(:,1:TOTAL_TRAIN_CASES+10) * P(:,1:TOTAL_TRAIN_CASES+10)' ;
         else
